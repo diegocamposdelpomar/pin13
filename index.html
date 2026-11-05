@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="es" data-theme="dark">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="theme-color" content="#0c1513" />
+  <title>Pin 13 · Aprende Arduino y programación</title>
+  <meta name="description" content="Aprende a programar y domina Arduino desde cero, con lecciones interactivas, un UNO virtual y un diccionario de funciones en español." />
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%23101c1a'/%3E%3Ccircle cx='16' cy='16' r='7' fill='%23e8964f'/%3E%3C/svg%3E" />
+  <link rel="manifest" href="manifest.webmanifest" />
+  <link rel="apple-touch-icon" href="icons/apple-touch-icon.png" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-title" content="Pin 13" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  <link rel="stylesheet" href="css/app.css" />
+</head>
+<body>
+  <a class="skip" href="#main">Saltar al contenido</a>
+  <header class="top">
+    <button type="button" class="menu-btn" id="menuBtn" aria-label="Abrir el temario">☰</button>
+    <a class="logo" href="#inicio"><span class="logo-led" aria-hidden="true"></span>PIN<b>13</b></a>
+    <nav class="topnav" aria-label="Principal">
+      <a href="#inicio" data-nav="">Inicio</a>
+      <a href="#curso" data-nav="leccion">Curso</a>
+      <a href="#lab" data-nav="lab">Laboratorio</a>
+      <a href="#funciones" data-nav="funciones">Funciones</a>
+      <a href="#placa" data-nav="placa">Placa</a>
+      <a href="#guias" data-nav="guias">Guías</a>
+    </nav>
+    <button type="button" class="btn btn-sm btn-ghost theme-btn" id="themeBtn">Modo claro</button>
+  </header>
+  <div class="shell">
+    <aside class="side" aria-label="Temario">
+      <div class="side-prog"><span>Tu progreso</span><strong id="navPctT">0 %</strong><div class="side-bar"><span id="navPct"></span></div></div>
+      <nav id="courseNav" class="course-nav"></nav>
+      <div class="side-foot">
+        <button type="button" class="linkish" id="resetBtn">Borrar mi progreso</button>
+        <div id="resetAsk" class="reset-ask" hidden>
+          <p>¿Borrar tu progreso y tu código? No se puede deshacer.</p>
+          <button type="button" class="btn btn-sm" id="resetYes">Sí, borrar</button>
+          <button type="button" class="btn btn-sm btn-ghost" id="resetNo">Cancelar</button>
+        </div>
+        <p>Proyecto educativo independiente, sin relación con Arduino®.</p>
+      </div>
+    </aside>
+    <main id="main" tabindex="-1"></main>
+  </div>
+  <div id="drawer" hidden>
+    <div id="scrim"></div>
+    <aside class="drawer-panel" role="dialog" aria-modal="true" aria-label="Ficha de la función">
+      <button type="button" class="drawer-close" aria-label="Cerrar ficha">×</button>
+      <div class="drawer-body"></div>
+    </aside>
+  </div>
+  <script src="js/sim/parser.js"></script>
+  <script src="js/sim/machine.js"></script>
+  <script src="js/data/functions.js"></script>
+  <script src="js/data/lessons-1.js"></script>
+  <script src="js/data/lessons-2.js"></script>
+  <script src="js/data/lessons-3.js"></script>
+  <script src="js/data/resources.js"></script>
+  <script src="js/ui/common.js"></script>
+  <script src="js/ui/board.js"></script>
+  <script src="js/ui/lab.js"></script>
+  <script src="js/ui/widgets.js"></script>
+  <script src="js/ui/app.js"></script>
+</body>
+</html>
