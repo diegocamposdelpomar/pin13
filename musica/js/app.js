@@ -328,6 +328,7 @@
         <button type="button" class="btn" data-act="demos">Añadir canciones de muestra</button></div></section>
       <section class="panel"><h2>Sonido</h2>
         <div class="btns"><button type="button" class="btn" data-act="eq">${icon('eq')}Ecualizador</button><button type="button" class="btn" data-act="timer">${icon('timer')}Temporizador</button></div></section>
+      <section class="panel"><h2>Instalar en el celular</h2>${installCard(true)}</section>
       <section class="panel danger"><h2>Borrar</h2><p class="muted small">Elimina todas las canciones y listas guardadas en la app. Los archivos originales de tu teléfono no se tocan.</p>
         <button type="button" class="btn btn-bad" data-act="wipe">${icon('trash')}Borrar toda la biblioteca</button></section>
       <p class="muted small center">Onda funciona sin internet y no envía tu música a ningún sitio: todo queda en este dispositivo.</p>`;
@@ -570,7 +571,7 @@
     else if (d.listmore) listMenu(d.listmore);
     else if (d.go) location.hash = d.go;
     else if (d.themeSet) { save('theme', d.themeSet); applyTheme(); render(true); }
-    else if (d.act) ({ pick: pickFiles, demos: () => addDemos(t), newlist: newList, wipe, eq: eqSheet, timer: timerSheet, hideinstall: () => { save('noInstall', true); render(true); } })[d.act]?.();
+    else if (d.act) ({ pick: pickFiles, demos: () => addDemos(t), newlist: newList, wipe, eq: eqSheet, timer: timerSheet, hideinstall: () => { save('noInstall', true); render(true); }, copylink: copyLink })[d.act]?.();
   });
   $('backBtn').addEventListener('click', () => { if (history.length > 1 && sessionHistory > 0) history.back(); else location.hash = '#/inicio'; });
   let sessionHistory = 0;
@@ -798,14 +799,32 @@
   /* ---------- Instalar en el teléfono ---------- */
   let installEvent = null;
   const isInstalled = () => matchMedia('(display-mode: standalone)').matches || navigator.standalone === true;
-  function installCard() {
-    if (isInstalled() || load('noInstall')) return '';
-    const isIOS = /iPhone|iPad|iPod/.test(navigator.userAgent) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
-    if (installEvent) return `<div class="install"><p><strong>Instala Onda</strong> para abrirla desde su icono, como cualquier app.</p><div class="btns"><button type="button" class="btn btn-go btn-sm" id="installBtn">Instalar</button><button type="button" class="btn btn-sm" data-act="hideinstall">Ahora no</button></div></div>`;
-    if (isIOS) return `<div class="install"><p><strong>Instala Onda en tu iPhone:</strong> en Safari, toca Compartir y luego «Añadir a pantalla de inicio».</p><div class="btns"><button type="button" class="btn btn-sm" data-act="hideinstall">Entendido</button></div></div>`;
-    return '';
+  function installCard(inSettings) {
+    if (isInstalled()) return inSettings ? '<p class="muted small">Onda ya está instalada en este dispositivo.</p>' : '';
+    if (!inSettings && load('noInstall')) return '';
+    const ua = navigator.userAgent;
+    const isIOS = /iPhone|iPad|iPod/.test(ua) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+    const isAndroid = /Android/i.test(ua);
+    // Navegadores integrados en otras apps (Claude, WhatsApp, Instagram, Google…): no permiten instalar.
+    const inApp = /FBAN|FBAV|Instagram|WhatsApp|Line\/|Telegram|Claude|GSA\/|; wv\)/i.test(ua) || (isIOS && !/Safari\//.test(ua));
+    const later = inSettings ? '' : '<button type="button" class="btn btn-sm" data-act="hideinstall">Ahora no</button>';
+    const copy = '<button type="button" class="btn btn-go btn-sm" data-act="copylink">Copiar enlace</button>';
+    let msg, btns = later;
+    if (installEvent) { msg = '<strong>Instala Onda</strong> para abrirla desde su ícono, como cualquier app.'; btns = '<button type="button" class="btn btn-go btn-sm" id="installBtn">Instalar</button>' + later; }
+    else if (inApp) { msg = `<strong>Para instalar Onda, ábrela en ${isIOS ? 'Safari' : 'Chrome'}.</strong> Estás en el navegador interno de otra app, que no permite instalar: toca el menú (⋮ o ⋯) y elige «Abrir en ${isIOS ? 'Safari' : 'Chrome'}» o «Abrir en el navegador». También puedes copiar el enlace y pegarlo allí.`; btns = copy + later; }
+    else if (isIOS && /CriOS|FxiOS|EdgiOS|OPiOS/.test(ua)) { msg = '<strong>Instala Onda en tu iPhone:</strong> toca Compartir (el cuadrado con la flecha) y luego «Añadir a pantalla de inicio». Si no aparece esa opción, abre este enlace en Safari.'; btns = copy + later; }
+    else if (isIOS) msg = '<strong>Instala Onda en tu iPhone:</strong> toca Compartir (el cuadrado con la flecha, abajo) y luego «Añadir a pantalla de inicio».';
+    else if (isAndroid) msg = '<strong>Instala Onda:</strong> toca el menú ⋮ de Chrome (arriba a la derecha) y elige «Instalar app» o «Añadir a pantalla de inicio».';
+    else if (!inSettings) return '';
+    else msg = 'Abre esta página en el navegador de tu celular (Chrome en Android, Safari en iPhone) para instalarla.';
+    return `<div class="install"><p>${msg}</p>${btns ? `<div class="btns">${btns}</div>` : ''}</div>`;
   }
-  window.addEventListener('beforeinstallprompt', (e) => { e.preventDefault(); installEvent = e; if (route.name === 'inicio') render(true); });
+  async function copyLink() {
+    const url = location.href.split('#')[0];
+    try { await navigator.clipboard.writeText(url); toast('Enlace copiado. Pégalo en tu navegador.'); }
+    catch (e) { toast(url, 6000); }
+  }
+  window.addEventListener('beforeinstallprompt', (e) => { e.preventDefault(); installEvent = e; if (route.name === 'inicio' || route.name === 'ajustes') render(true); });
   window.addEventListener('appinstalled', () => { installEvent = null; render(true); });
   if ('serviceWorker' in navigator && location.protocol.startsWith('http')) {
     window.addEventListener('load', () => { navigator.serviceWorker.register('sw.js').catch(() => {}); });
