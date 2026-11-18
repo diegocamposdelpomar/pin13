@@ -3,12 +3,8 @@
 #   https://github.com/diegocamposdelpomar/pin13/releases/latest/download/Onda.apk
 name: Onda · app Android
 
+# Solo a mano (pestaña Actions → «Run workflow»): la app se instala desde la web.
 on:
-  push:
-    paths:
-      - 'musica/**'
-      - 'musica-android/**'
-      - '.github/workflows/onda-android.yml'
   workflow_dispatch:
 
 permissions:
