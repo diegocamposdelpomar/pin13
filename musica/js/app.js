@@ -825,7 +825,7 @@
     catch (e) { toast(url, 6000); }
   }
   window.addEventListener('beforeinstallprompt', (e) => { e.preventDefault(); installEvent = e; if (route.name === 'inicio' || route.name === 'ajustes') render(true); });
-  window.addEventListener('appinstalled', () => { installEvent = null; render(true); });
+  window.addEventListener('appinstalled', () => { installEvent = null; toast('Onda se instaló. Búscala en tus apps (puede tardar unos segundos en aparecer).', 6000); render(true); });
   if ('serviceWorker' in navigator && location.protocol.startsWith('http')) {
     window.addEventListener('load', () => { navigator.serviceWorker.register('sw.js').catch(() => {}); });
   }

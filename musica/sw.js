@@ -1,6 +1,6 @@
 /* Guarda Onda en el teléfono para que abra sin internet. La música no pasa por aquí:
    vive en IndexedDB. Al cambiar cualquier archivo, sube VERSION para que los teléfonos se actualicen. */
-const VERSION = 'onda-3';
+const VERSION = 'onda-4';
 const FILES = [
   './', 'index.html', 'app.css', 'manifest.webmanifest',
   'js/db.js', 'js/tags.js', 'js/demo.js', 'js/player.js', 'js/app.js',
