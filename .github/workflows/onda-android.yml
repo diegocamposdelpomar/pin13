@@ -1,0 +1,80 @@
+# Compila Onda (carpeta musica/) como app Android y la publica en «Releases».
+# Enlace fijo a la última versión:
+#   https://github.com/diegocamposdelpomar/pin13/releases/latest/download/Onda.apk
+name: Onda · app Android
+
+on:
+  push:
+    paths:
+      - 'musica/**'
+      - 'musica-android/**'
+      - '.github/workflows/onda-android.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  apk:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: musica-android
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 21
+
+      - name: Instalar Capacitor
+        run: npm install --no-audit --no-fund
+
+      - name: Copiar la app web
+        run: |
+          rm -rf www && mkdir www
+          cp -r ../musica/. www/
+          rm -f www/README.md www/sw.js
+
+      - name: Crear el proyecto Android
+        run: |
+          npx cap add android
+          # Íconos y pantalla de carga de Onda (en lugar de los de Capacitor)
+          find android/app/src/main/res -name 'splash.png' -delete
+          cp -r res/. android/app/src/main/res/
+          # Sin dibujar bajo la barra de estado (Android 15)
+          sed -i 's#</style>#    <item name="android:windowOptOutEdgeToEdgeEnforcement">true</item>\n    </style>#' android/app/src/main/res/values/styles.xml
+          # Número de versión = número de compilación
+          sed -i "s/versionCode 1$/versionCode ${{ github.run_number }}/; s/versionName \"1.0\"/versionName \"1.0.${{ github.run_number }}\"/" android/app/build.gradle
+          npx cap sync android
+
+      - name: Compilar el APK
+        working-directory: musica-android/android
+        run: |
+          chmod +x gradlew
+          ./gradlew assembleDebug --no-daemon --stacktrace
+          cp app/build/outputs/apk/debug/app-debug.apk ../Onda.apk
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: Onda-apk
+          path: musica-android/Onda.apk
+
+      - name: Publicar en Releases
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: onda-android-${{ github.run_number }}
+          name: Onda para Android · versión 1.0.${{ github.run_number }}
+          target_commitish: ${{ github.sha }}
+          make_latest: true
+          files: musica-android/Onda.apk
+          body: |
+            App de música Onda para Android.
+
+            **Cómo instalarla:** abre este enlace desde el celular, descarga **Onda.apk** y ábrelo.
+            Android pedirá permiso para instalar apps de esta fuente: actívalo para Chrome (o para tu gestor de archivos) y vuelve a tocar el archivo.

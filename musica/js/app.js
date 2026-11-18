@@ -798,7 +798,9 @@
 
   /* ---------- Instalar en el teléfono ---------- */
   let installEvent = null;
-  const isInstalled = () => matchMedia('(display-mode: standalone)').matches || navigator.standalone === true;
+  // Dentro de la app Android (Capacitor) ya está instalada y trae sus archivos: sin aviso ni service worker.
+  const isNative = !!(window.Capacitor && window.Capacitor.isNativePlatform && window.Capacitor.isNativePlatform());
+  const isInstalled = () => isNative || matchMedia('(display-mode: standalone)').matches || navigator.standalone === true;
   function installCard(inSettings) {
     if (isInstalled()) return inSettings ? '<p class="muted small">Onda ya está instalada en este dispositivo.</p>' : '';
     if (!inSettings && load('noInstall')) return '';
@@ -826,7 +828,7 @@
   }
   window.addEventListener('beforeinstallprompt', (e) => { e.preventDefault(); installEvent = e; if (route.name === 'inicio' || route.name === 'ajustes') render(true); });
   window.addEventListener('appinstalled', () => { installEvent = null; toast('Onda se instaló. Búscala en tus apps (puede tardar unos segundos en aparecer).', 6000); render(true); });
-  if ('serviceWorker' in navigator && location.protocol.startsWith('http')) {
+  if (!isNative && 'serviceWorker' in navigator && location.protocol.startsWith('http')) {
     window.addEventListener('load', () => { navigator.serviceWorker.register('sw.js').catch(() => {}); });
   }
 

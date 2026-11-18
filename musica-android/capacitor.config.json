@@ -1,0 +1,8 @@
+{
+  "appId": "app.onda.musica",
+  "appName": "Onda",
+  "webDir": "www",
+  "android": {
+    "backgroundColor": "#0f0e13"
+  }
+}
