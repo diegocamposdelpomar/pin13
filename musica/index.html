@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="theme-color" content="#0f0e13" />
+  <title>Onda · Tu música</title>
+  <meta name="description" content="Reproductor de música para el celular: escucha tus canciones sin internet, con listas, cola, ecualizador y temporizador." />
+  <link rel="icon" href="icons/icon-192.png" />
+  <link rel="manifest" href="manifest.webmanifest" />
+  <link rel="apple-touch-icon" href="icons/apple-touch-icon.png" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-title" content="Onda" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <link rel="stylesheet" href="app.css" />
+</head>
+<body>
+  <svg width="0" height="0" style="position:absolute" aria-hidden="true">
+    <defs>
+      <symbol id="i-play" viewBox="0 0 24 24"><path d="M8 5.5v13a1 1 0 0 0 1.5.86l10.5-6.5a1 1 0 0 0 0-1.72L9.5 4.64A1 1 0 0 0 8 5.5z" fill="currentColor"/></symbol>
+      <symbol id="i-pause" viewBox="0 0 24 24"><rect x="6" y="4.5" width="4" height="15" rx="1.2" fill="currentColor"/><rect x="14" y="4.5" width="4" height="15" rx="1.2" fill="currentColor"/></symbol>
+      <symbol id="i-next" viewBox="0 0 24 24"><path d="M5 6.2v11.6a.9.9 0 0 0 1.4.75l8.7-5.8a.9.9 0 0 0 0-1.5L6.4 5.45A.9.9 0 0 0 5 6.2z" fill="currentColor"/><rect x="16.5" y="5" width="2.6" height="14" rx="1" fill="currentColor"/></symbol>
+      <symbol id="i-prev" viewBox="0 0 24 24"><path d="M19 6.2v11.6a.9.9 0 0 1-1.4.75l-8.7-5.8a.9.9 0 0 1 0-1.5l8.7-5.8A.9.9 0 0 1 19 6.2z" fill="currentColor"/><rect x="4.9" y="5" width="2.6" height="14" rx="1" fill="currentColor"/></symbol>
+      <symbol id="i-shuffle" viewBox="0 0 24 24"><path d="M16 4h4v4M4 20 20 4M20 16v4h-4M15 15l5 5M4 4l5 5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+      <symbol id="i-repeat" viewBox="0 0 24 24"><path d="M17 2l4 4-4 4M3 11V9a3 3 0 0 1 3-3h15M7 22l-4-4 4-4M21 13v2a3 3 0 0 1-3 3H3" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+      <symbol id="i-repeat1" viewBox="0 0 24 24"><path d="M17 2l4 4-4 4M3 11V9a3 3 0 0 1 3-3h15M7 22l-4-4 4-4M21 13v2a3 3 0 0 1-3 3H3" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M11 10.2l1.4-.9v5.4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+      <symbol id="i-heart" viewBox="0 0 24 24"><path d="M12 20.5s-7.5-4.6-9.3-9.2C1.4 7.9 3.6 4.5 7 4.5c2 0 3.6 1.1 5 3 1.4-1.9 3-3 5-3 3.4 0 5.6 3.4 4.3 6.8-1.8 4.6-9.3 9.2-9.3 9.2z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></symbol>
+      <symbol id="i-heart-on" viewBox="0 0 24 24"><path d="M12 20.5s-7.5-4.6-9.3-9.2C1.4 7.9 3.6 4.5 7 4.5c2 0 3.6 1.1 5 3 1.4-1.9 3-3 5-3 3.4 0 5.6 3.4 4.3 6.8-1.8 4.6-9.3 9.2-9.3 9.2z" fill="currentColor" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></symbol>
+      <symbol id="i-more" viewBox="0 0 24 24"><circle cx="5" cy="12" r="2" fill="currentColor"/><circle cx="12" cy="12" r="2" fill="currentColor"/><circle cx="19" cy="12" r="2" fill="currentColor"/></symbol>
+      <symbol id="i-plus" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></symbol>
+      <symbol id="i-search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="6.5" fill="none" stroke="currentColor" stroke-width="2.2"/><path d="M16 16l4.5 4.5" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></symbol>
+      <symbol id="i-home" viewBox="0 0 24 24"><path d="M4 10.5 12 4l8 6.5V19a1.5 1.5 0 0 1-1.5 1.5H15v-6H9v6H5.5A1.5 1.5 0 0 1 4 19z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></symbol>
+      <symbol id="i-library" viewBox="0 0 24 24"><path d="M5 4v16M10 4v16M15 4.5l4.5 15" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></symbol>
+      <symbol id="i-lists" viewBox="0 0 24 24"><path d="M4 6h11M4 11h11M4 16h6" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/><circle cx="17.5" cy="17" r="2.5" fill="none" stroke="currentColor" stroke-width="2"/><path d="M20 17V8.5l2-.8" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></symbol>
+      <symbol id="i-down" viewBox="0 0 24 24"><path d="M6 9l6 6 6-6" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+      <symbol id="i-back" viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+      <symbol id="i-queue" viewBox="0 0 24 24"><path d="M4 6h16M4 11h16M4 16h9" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/><path d="M16 14.5v5l4-2.5z" fill="currentColor"/></symbol>
+      <symbol id="i-timer" viewBox="0 0 24 24"><circle cx="12" cy="13" r="7.5" fill="none" stroke="currentColor" stroke-width="2"/><path d="M12 9v4l2.5 2M9.5 2.5h5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></symbol>
+      <symbol id="i-eq" viewBox="0 0 24 24"><path d="M6 4v16M12 4v16M18 4v16" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><circle cx="6" cy="14" r="2.4" fill="var(--bg)" stroke="currentColor" stroke-width="2"/><circle cx="12" cy="8" r="2.4" fill="var(--bg)" stroke="currentColor" stroke-width="2"/><circle cx="18" cy="15.5" r="2.4" fill="var(--bg)" stroke="currentColor" stroke-width="2"/></symbol>
+      <symbol id="i-gear" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3" fill="none" stroke="currentColor" stroke-width="2"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 1 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></symbol>
+      <symbol id="i-trash" viewBox="0 0 24 24"><path d="M4 7h16M9 7V4.5h6V7M6.5 7l1 13h9l1-13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+      <symbol id="i-note" viewBox="0 0 24 24"><path d="M9 18V5.5l11-2V16" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><circle cx="6.5" cy="18" r="2.5" fill="currentColor"/><circle cx="17.5" cy="16" r="2.5" fill="currentColor"/></symbol>
+      <symbol id="i-x" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></symbol>
+      <symbol id="i-up" viewBox="0 0 24 24"><path d="M6 15l6-6 6 6" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+      <symbol id="i-person" viewBox="0 0 24 24"><circle cx="12" cy="8.5" r="4" fill="none" stroke="currentColor" stroke-width="2"/><path d="M4.5 20.5c1-4 4-5.5 7.5-5.5s6.5 1.5 7.5 5.5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></symbol>
+      <symbol id="i-disc" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.5" fill="none" stroke="currentColor" stroke-width="2"/><circle cx="12" cy="12" r="2.2" fill="currentColor"/></symbol>
+      <symbol id="i-edit" viewBox="0 0 24 24"><path d="M4 20h4L19 9l-4-4L4 16z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></symbol>
+    </defs>
+  </svg>
+
+  <div class="app">
+    <header class="bar">
+      <button type="button" class="icon-btn" id="backBtn" aria-label="Volver" hidden><svg><use href="#i-back"/></svg></button>
+      <h1 id="viewTitle">Inicio</h1>
+      <div class="bar-actions" id="barActions"></div>
+    </header>
+
+    <main id="view" tabindex="-1"></main>
+
+    <section class="mini" id="mini" hidden aria-label="Reproduciendo">
+      <div class="mini-prog"><span id="miniProg"></span></div>
+      <button type="button" class="mini-open" id="miniOpen" aria-label="Abrir reproductor">
+        <span class="cover cover-sm" id="miniCover"></span>
+        <span class="mini-txt"><strong id="miniTitle"></strong><span id="miniArtist"></span></span>
+      </button>
+      <button type="button" class="icon-btn" id="miniFav" aria-label="Me gusta"><svg><use href="#i-heart"/></svg></button>
+      <button type="button" class="icon-btn icon-lg" id="miniPlay" aria-label="Reproducir"><svg><use href="#i-play"/></svg></button>
+      <button type="button" class="icon-btn" id="miniNext" aria-label="Siguiente"><svg><use href="#i-next"/></svg></button>
+    </section>
+
+    <nav class="tabs" aria-label="Secciones">
+      <a href="#/inicio" data-tab="inicio"><svg><use href="#i-home"/></svg><span>Inicio</span></a>
+      <a href="#/biblioteca" data-tab="biblioteca"><svg><use href="#i-library"/></svg><span>Biblioteca</span></a>
+      <a href="#/listas" data-tab="listas"><svg><use href="#i-lists"/></svg><span>Listas</span></a>
+      <a href="#/buscar" data-tab="buscar"><svg><use href="#i-search"/></svg><span>Buscar</span></a>
+    </nav>
+  </div>
+
+  <!-- Reproductor a pantalla completa -->
+  <section class="np" id="np" hidden role="dialog" aria-modal="true" aria-label="Reproductor">
+    <div class="np-bg" id="npBg"></div>
+    <header class="np-top">
+      <button type="button" class="icon-btn" id="npClose" aria-label="Cerrar reproductor"><svg><use href="#i-down"/></svg></button>
+      <div class="np-from"><span>Reproduciendo desde</span><strong id="npFrom"></strong></div>
+      <button type="button" class="icon-btn" id="npMore" aria-label="Más opciones"><svg><use href="#i-more"/></svg></button>
+    </header>
+    <div class="np-art">
+      <div class="cover cover-xl" id="npCover"></div>
+      <canvas id="npViz" class="np-viz" aria-hidden="true"></canvas>
+    </div>
+    <div class="np-meta">
+      <div class="np-txt"><h2 id="npTitle"></h2><button type="button" class="np-artist" id="npArtist"></button></div>
+      <button type="button" class="icon-btn" id="npFav" aria-label="Me gusta"><svg><use href="#i-heart"/></svg></button>
+    </div>
+    <div class="np-seek">
+      <input type="range" id="seek" min="0" max="1000" value="0" step="1" aria-label="Posición de la canción" />
+      <div class="np-times"><span id="tCur">0:00</span><span id="tDur">0:00</span></div>
+    </div>
+    <div class="np-ctrl">
+      <button type="button" class="icon-btn" id="btnShuffle" aria-label="Aleatorio" aria-pressed="false"><svg><use href="#i-shuffle"/></svg></button>
+      <button type="button" class="icon-btn icon-lg" id="btnPrev" aria-label="Anterior"><svg><use href="#i-prev"/></svg></button>
+      <button type="button" class="play-big" id="btnPlay" aria-label="Reproducir"><svg><use href="#i-play"/></svg></button>
+      <button type="button" class="icon-btn icon-lg" id="btnNext" aria-label="Siguiente"><svg><use href="#i-next"/></svg></button>
+      <button type="button" class="icon-btn" id="btnRepeat" aria-label="Repetir: no"><svg><use href="#i-repeat"/></svg></button>
+    </div>
+    <div class="np-tools">
+      <button type="button" class="tool" id="btnTimer"><svg><use href="#i-timer"/></svg><span id="timerLbl">Temporizador</span></button>
+      <button type="button" class="tool" id="btnEq"><svg><use href="#i-eq"/></svg><span>Ecualizador</span></button>
+      <button type="button" class="tool" id="btnQueue"><svg><use href="#i-queue"/></svg><span>Cola</span></button>
+    </div>
+  </section>
+
+  <!-- Hoja inferior reutilizable (acciones, cola, ecualizador…) -->
+  <div class="sheet-wrap" id="sheetWrap" hidden>
+    <div class="scrim" id="scrim"></div>
+    <section class="sheet" id="sheet" role="dialog" aria-modal="true" aria-labelledby="sheetTitle">
+      <div class="grip" aria-hidden="true"></div>
+      <header class="sheet-head"><h3 id="sheetTitle"></h3><button type="button" class="icon-btn" id="sheetClose" aria-label="Cerrar"><svg><use href="#i-x"/></svg></button></header>
+      <div class="sheet-body" id="sheetBody"></div>
+    </section>
+  </div>
+
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+  <input type="file" id="filePick" accept="audio/*,.mp3,.m4a,.aac,.ogg,.oga,.opus,.wav,.flac,.webm" multiple hidden />
+  <audio id="audio" preload="auto"></audio>
+
+  <script src="js/db.js"></script>
+  <script src="js/tags.js"></script>
+  <script src="js/demo.js"></script>
+  <script src="js/player.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
